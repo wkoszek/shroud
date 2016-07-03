@@ -1,0 +1,51 @@
+#
+#	Makefile for shroud.exe: MSC C version 5.1
+#
+#
+#   Make Microsoft C V5.1 Rules: Large model
+#
+#   compile with	-Zi : codeview
+#			-AL : large model
+#			-c  : compile only
+#			-Od : no code optimization
+#			-Ox : maximum code optimization
+#			-Za : disable language extensions
+#			-Zr : quick C pointer checks
+#			-W3 : maximum warnings
+#		 	qcl : quick c
+#			-FPa : use alternate floating point library
+#			-Gt5000 : place any object > 5000 bytes into its own segment
+
+.c  .obj
+#	qcl -AL -Od -Zr -W3 -Zi -Gt5000 -c  $@
+	cl -AL -Ox -W3 -c -Gt5000 $@
+
+.l .c
+	lex -a -i $@ -o $*.c -v lex.log
+
+OFILES = clex.obj shroud.obj include.obj stream.obj mapping.obj
+CFILES = clex.c shroud.c include.c stream.c mapping.c
+
+shroud.exe:   $(CFILES) $(OFILES) makefile
+        link $(OFILES),shroud,nul,llexlib lgetopt /noe /exepack;
+	exemod shroud.exe -stack 4000
+
+clex.obj:  shroud.h include.h
+include.obj:  shroud.h stream.h
+shroud.obj:  shroud.h stream.h mapping.h
+stream.obj:  shroud.h stream.h
+mapping.obj: shroud.h
+
+#
+# for lint analysis : make -flint
+#
+
+lint:	$(CFILES)
+#	ignore message about missing functions (526)
+#	and message about shifting signed values (702, 704)
+#	and message about return values (534)
+	command /c echo -e526 -e702 -e704 -e534 >t.lnt
+	command /c ls -q ^*.c >>t.lnt
+	command /c lint \cc\sl-msc t >lint
+	command /c echo The result is in the file 'lint'
+	command /c erase t.lnt

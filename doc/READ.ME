@@ -1,0 +1,75 @@
+
+	Thank you for downloading our C source code shrouder.  Here are some
+notes concerning version 1.0 of shroud.
+
+	This version is distributed as executables only for MSDOS computers.
+The source code for shroud will be released later.  We wish to ensure that
+the version of LEX we use is compatible with LEX on other systems.  This
+source code will not be shrouded.
+
+	Version 2.0 will have another command line switch to specify the
+maximum number of mappings that are allowed.  Currently, 5000 are allowed.
+This is a nice number for MSDOS large model programs.
+
+	Shroud has only been tested with Microsoft C V5.1.  We ran it through
+most of our C source code that was available.  There were no problems, even
+with the code from the obfuscated C contests held from 1984-1988 on Usenet.
+
+	We have not been able to get shroud to produce output that can't be
+compiled again.  All the problems show up as linker errors.  You will see
+things like: 
+
+	LINK : error L2029: Unresolved externals:
+
+	__409 in file(s):
+
+	FRED.OBJ(fred.c)
+
+	Basically, what happens is that certain names get shrouded when you  
+don't want them to.  Older code which doesn't include header files is the
+main culprit.  The best remedy is to create a version of the mapping file
+(shroud.map) that contains all of your library function and variable names.
+You can do this by creating a C program that includes all of your library
+include files and then shrouding it.
+
+	Linker errors are also caused by external names created in other
+languages, usually assembly code.  These names must be placed into the
+mapping file as null mappings to prevent them from being shrouded.  For us,
+this isn't a problem because we only shroud our code for porting to other
+systems and assembly isn't portable.
+
+	The shrouded source code does not have formatting whitespace removed.
+There is no reason to do this because any source code formatter can put the
+whitespace back in.
+
+	Now, for a message on ethics and whatnot.  Please don't shroud any
+source code that you upload to this system or any others.  People won't be
+able to learn anything from your code.  There are two things you should
+shroud code for.  
+
+	The first is to prevent the loss of trade secrets when installing
+your program on a client's system.  We think that this is ok because you are
+being paid to provide a service to someone by installing your program and
+letting them have the benefit of using that program.  Shrouding makes it easy
+for you to install your program and difficult for the client to steal your
+program.
+
+	The second use of shrouding would be to report compiler bugs.  Most
+compiler bugs would be demonstrated in the shrouded code and the original
+code.  You can send your shrouded source code to the compiler manufacturer
+without worrying about giving away any details of your source code.
+
+	Please inform us of any bugs you discover.  I suspect that we
+missed a few Ansi features.  Tell us what compiler you were using.
+Any suggestions on how to make the program easier to use are also
+appreciated.  You may contact us at any of the following addresses:
+
+	A postscript version of the man page is in the file shroud.ps.
+
+	Bix: toren
+	Compuserve: 76167, 3600
+	UUCP: tris@alzabo.uucp
+
+
+	Thank you and happy shrouding.
+

@@ -1,0 +1,113 @@
+NAME
+        SHROUD - Ansi-conforming C language source code shrouder
+
+SYNOPSIS
+	shroud [-e ENVIRONMENT_VARIABLE] [-h PATH] \output_directory files
+
+DESCRIPTION
+	Shroud is used to produce C source code which is too cryptic for
+	humans to understand but keeps the same meaning.  Shrouded source
+	code can be distributed to others without disclosing your trade
+	secrets.
+
+	Shroud filters the input files to the output directory.  C language
+	macros and C language preprocessor directives as specified in the
+	Draft Proposed ANSI Standard for the C Language are left intact.
+
+	A file named shroud.map in the current directory contains the
+	mappings of identifiers to their shrouded version.  Keywords used by
+	specific C compilers should be placed in this file.
+
+OPTIONS
+        The following options are recognized.  Spaces between the option
+	letter and the parameter are optional.
+
+        -e	Use the following name as an environment variable that 
+		specifies a path for locating include files.
+	-h	Use the following path to locate include files.
+
+
+EXAMPLES
+	The following command shrouds the source file example.c to the \tmp
+	directory and uses the standard Microsoft C environment variable
+	INCLUDE to locate any include files.
+
+		shroud -eINCLUDE \tmp example.c
+	
+	The following command shrouds the source file example.c to the \tmp
+	directory and uses an explicit path to locate any include files.
+	Multiple paths are separated with semicolons.
+
+		shroud -h c:\include;c:\headers \tmp example.c
+
+	Use a program similar to xargs to process more than one file.
+	
+		ls *.c *.h | xargs "shroud \temp"
+
+DETAILS
+	All identifiers, other than those first encountered in library header
+	files (#include <...>) are replaced with numbered variables that look
+	like _134.  Whitespace is unaffected and comments are removed.  All
+	.c and .h files for a project must be shrouded.
+
+	The file shroud.map contains the mappings for the code you are
+	shrouding.  Each line contains two identifiers, the original and
+	the transformed name.
+
+	Keywords for the C compiler being used are also placed in the file
+	as a null mapping.  Null mappings have the same original and
+	transformed names.  Here is a portion of a mapping file with two
+	null mappings and two normal mappings.
+
+		int	int
+		printf	printf
+		sum	_145
+		target	_146
+
+	It is not necessary to create null mappings for all the names used
+	by the C libraries as long as each one is mentioned in a header file.
+	Null mappings are created automatically for each name found in a
+	library header file.
+
+	There is a file called start.map that contains keywords for Ansi and
+	Microsoft C.  Keep this file in a safe place and copy it to shroud.map
+	for each program that you shroud.
+
+	It is a good idea to add to start.map by shrouding a source file that
+	includes all of your library header files.  This will ensure that
+	every library name is in the mapping file.
+
+BUGS
+	Preprocessor commands like #define and #ifdef are not evaluated.
+	In the following example shroud will attempt to read both
+	include files and will report that it cannot open one of the files.
+
+		#ifdef SUN
+		#include <sys/time.h>
+		#endif
+
+		#ifdef SYSV
+		#include <times.h>
+		#endif
+
+
+	Shroud is limited to 5000 different variable transformations.  This
+	is an arbitrary restriction which will be removed in the future.
+
+	Functions and variables which are written in languages other than C
+	and are linked with C source code must be placed in the mapping file
+	as a null mapping.  This is usually done manually after the linker
+	has reported errors.
+
+	Any compiler or lint commands that are placed inside comments
+	are lost.
+
+HISTORY
+	Copyright (c)	1990 by	Torensoft Consulting.  Permission is
+	granted to use this program in whole or in part provided
+	that you do not sell it for profit and that this copyright
+	notice is retained unchanged.
+
+	17-Mar-90  Tris C. Orendorff at Torensoft Consulting
+	First release (version 1.0)
+

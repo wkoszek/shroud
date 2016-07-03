@@ -1,0 +1,7 @@
+Shroud is a small C source program to shroud (hide) the meaning of C source code.  This is done by changing most names in a C program to something obscure like _302.
+
+The program is originally a MS-DOS program with fixed limits (5000) for array sizes.  There is very little documentation.  Source code is four small C files (*.c), a lex file (*.l) and four include files (*.h).  The compiler used was Microsoft C v5.
+
+This project is command-line oriented, no graphics or GUI used. The project was written in March 1990.
+
+We are planning to port this program to Linux and possibly windows NT/2000/XP.
