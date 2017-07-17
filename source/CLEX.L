@@ -53,8 +53,8 @@ any_include = [^>];		/* any character inside #include <> */
 	char *translation;
 %}
 
-/* #include <> preprocessor line */
-# blank* INCLUDE blank* "<" any_include* ">"		/* treat <> like "" */
+# #include <> preprocessor line
+blank* INCLUDE blank* "<" any_include* ">"		/* treat <> like "" */
 		{
 			lexecho (output);
 			gettoken (buffer, MAX);
@@ -65,8 +65,8 @@ any_include = [^>];		/* any character inside #include <> */
 			}
 		}
 
-/* all other preprocessor lines */
-# blank* name	{
+# all other preprocessor lines
+blank* name	{
 			print_current_token ();
 		}
 
@@ -100,7 +100,7 @@ string		{
 			print_current_token ();
 		}
 
-/* the default is any legal character not mentioned above */
+# the default is any legal character not mentioned above
 
 legal		{
 			print_current_token ();

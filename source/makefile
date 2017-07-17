@@ -1,2 +1,3 @@
 all:
-	$(CC) $(CFLAGS) *.C -o shroud
+	lex CLEX.L
+	$(CC) $(CFLAGS) *.c *.C -o shroud

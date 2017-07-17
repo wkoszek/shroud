@@ -10,7 +10,6 @@ struct mapping
 	char *old;
 	char *new;
 }
-;
 
 #define MAX_MAPPINGS	5000
 
