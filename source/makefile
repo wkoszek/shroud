@@ -1,3 +1,5 @@
+CFLAGS+=-Wno-unused-value
+
 all:
-	lex CLEX.L
-	$(CC) $(CFLAGS) *.c *.C -o shroud
+	lex clex.l
+	$(CC) $(CFLAGS) *.c -o shroud
