@@ -7,7 +7,7 @@
 %{
 #include "shroud.h"
 #include "include.h"
-#define MAX 1000
+#define BUF_MAX 1000
 %}
 
 legal	= [\040-\176\n\r\t\f\v];
@@ -49,7 +49,7 @@ any_include = [^>];		/* any character inside #include <> */
 %%
 
 %{
-	char buffer [MAX];
+	char buffer [BUF_MAX];
 	char *translation;
 %}
 
@@ -57,7 +57,7 @@ any_include = [^>];		/* any character inside #include <> */
 blank* INCLUDE blank* "<" any_include* ">"		/* treat <> like "" */
 		{
 			lexecho (output);
-			gettoken (buffer, MAX);
+			gettoken (buffer, BUF_MAX);
 			if (include (get_file (buffer)))
 			{
 				/* we are now reading a system include file */
@@ -75,7 +75,7 @@ number		{
 		}
 
 name		{
-			gettoken (buffer, MAX);
+			gettoken (buffer, BUF_MAX);
 			translation = translate (buffer);
 			/* only print out non-system file tokens */
 			if (!is_system_include_file)
